@@ -95,7 +95,7 @@ if st.button("🔍 Jalankan Diagnosa"):
             st.write(f"• {gejala[g_kode]}")
         
         st.subheader("📊 Probabilitas Tiap Penyakit")
-        for p_kode, prob in hasil_probabilitas.items(
+        for p_kode, prob in hasil_probabilitas.items():
             st.write(f"• **{penyakit[p_kode]}** → {prob:.2%}")
         
         st.success(f"🌱 **Diagnosa Akhir: {penyakit[most_likely_kode]}**")
