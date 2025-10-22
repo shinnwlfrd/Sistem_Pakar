@@ -102,7 +102,7 @@ if st.button("🔍 Jalankan Diagnosa"):
         st.caption(f"(Probabilitas: {hasil_probabilitas[most_likely_kode]:.2%})")
 else:
     st.info("Pilih minimal 3 gejala, lalu tekan tombol *Jalankan Diagnosa* untuk melihat hasil.")        'G6': 0.1, 'G7': 0.3, 'G8': 0.8, 'G9': 0.1  # Baru
-    },
+    }
     
     # Probabilitas gejala JIKA terkena P3 (Layu Bakteri)
     'P3': {
