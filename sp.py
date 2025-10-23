@@ -112,3 +112,10 @@ if st.button("🔍 Jalankan Diagnosa"):
 
 else:
     st.info("Pilih minimal 3 gejala, lalu tekan tombol *Jalankan Diagnosa* untuk melihat hasil.")
+
+# tampilkan HTML dari file
+with open("sp.html", "r", encoding="utf-8") as f:
+    html_content = f.read()
+
+st.markdown("## 📈 Flowchart Sistem Pakar")
+st.components.v1.html(html_content, height=600, scrolling=True)
