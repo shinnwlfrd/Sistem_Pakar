@@ -1,63 +1,122 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flowchart Sistem Pakar Penyakit Cengkeh</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 1200px;
-        }
-        h1 {
-            text-align: center;
-            color: #2E8B57;
-            margin-bottom: 10px;
-            font-size: 28px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        svg {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-            height: auto;
-        }
-        .legend {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f5f7f9;
-            border-radius: 10px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .legend-box {
-            width: 40px;
-            height: 30px;
-            border-radius: 5px;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowchart Sistem Pakar Penyakit Cengkeh</title>
+<style>
+    body {
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        max-width: 1200px;
+    }
+    h1 {
+        text-align: center;
+        color: #2E8B57;
+        margin-bottom: 10px;
+        font-size: 28px;
+    }
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+    svg {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+    }
+    .legend {
+        margin-top: 30px;
+        padding: 20px;
+        background: #f5f7f9;
+        border-radius: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Bentuk khusus legenda */
+    .legend-ellipse {
+        width: 50px;
+        height: 35px;
+        background: linear-gradient(to bottom, #4CAF50, #2E8B57);
+        border-radius: 50%;
+        border: 2px solid #333;
+    }
+    .legend-rect {
+        width: 50px;
+        height: 30px;
+        border-radius: 8px;
+        border: 2px solid #333;
+    }
+    .legend-rect.proses {
+        background: linear-gradient(to bottom, #64B5F6, #1976D2);
+    }
+    .legend-rect.data {
+        background: linear-gradient(to bottom, #FFD54F, #FFA000);
+    }
+    .legend-diamond {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(to bottom, #FF8A65, #E64A19);
+        border: 2px solid #333;
+        transform: rotate(45deg);
+    }
+    .legend-text {
+        font-size: 13px;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🌿 Flowchart Sistem Pakar Diagnosa Penyakit Cengkeh</h1>
+    <p class="subtitle">Alur Kerja Program Berbasis Teorema Bayes (Streamlit)</p>
+
+    <!-- Flowchart SVG (yang panjang itu, biarkan sama seperti sebelumnya) -->
+    <svg> ... </svg>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-ellipse"></div>
+            <span class="legend-text">Start / End</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-rect proses"></div>
+            <span class="legend-text">Proses / Perhitungan</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-rect data"></div>
+            <span class="legend-text">Input / Output Data</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-diamond"></div>
+            <span class="legend-text">Keputusan (Ya/Tidak)</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
             border: 2px solid #333;
         }
         .legend-text {
