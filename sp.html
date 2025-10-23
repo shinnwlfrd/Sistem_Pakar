@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowchart Sistem Pakar Penyakit Cengkeh</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1200px;
+        }
+        h1 {
+            text-align: center;
+            color: #2E8B57;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f7f9;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .legend-box {
+            width: 40px;
+            height: 30px;
+            border-radius: 5px;
+            border: 2px solid #333;
+        }
+        .legend-text {
+            font-size: 13px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 Flowchart Sistem Pakar Diagnosa Penyakit Cengkeh</h1>
+        <p class="subtitle">Alur Kerja Program Berbasis Teorema Bayes (Streamlit)</p>
+        
+        <svg width="1100" height="1600" viewBox="0 0 1100 1600" xmlns="http://www.w3.org/2000/svg">
+            <!-- Definisi untuk arrow markers -->
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#333" />
+                </marker>
+                
+                <!-- Gradients -->
+                <linearGradient id="startGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#2E8B57;stop-opacity:1" />
+                </linearGradient>
+                
+                <linearGradient id="processGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#64B5F6;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1" />
+                </linearGradient>
+                
+                <linearGradient id="dataGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#FFD54F;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFA000;stop-opacity:1" />
+                </linearGradient>
+                
+                <linearGradient id="decisionGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#FF8A65;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#E64A19;stop-opacity:1" />
+                </linearGradient>
+                
+                <linearGradient id="endGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#E57373;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#C62828;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            
+            <!-- START -->
+            <ellipse cx="550" cy="40" rx="80" ry="35" fill="url(#startGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="48" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle">MULAI</text>
+            
+            <!-- Arrow -->
+            <line x1="550" y1="75" x2="550" y2="110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            
+            <!-- Inisialisasi Basis Pengetahuan -->
+            <rect x="400" y="110" width="300" height="80" rx="10" fill="url(#dataGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="135" font-family="Arial" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">Inisialisasi Basis Pengetahuan</text>
+            <text x="550" y="155" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">• Gejala (G1–G9)</text>
+            <text x="550" y="170" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">• Penyakit (P1–P5)</text>
+            <text x="550" y="185" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">• Prior & Likelihood</text>
+            
+            <!-- Arrow -->
+            <line x1="550" y1="190" x2="550" y2="230" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            
+            <!-- Tampilan Antarmuka Streamlit -->
+            <rect x="400" y="230" width="300" height="70" rx="10" fill="url(#processGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="255" font-family="Arial" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Tampilkan Antarmuka Web</text>
+            <text x="550" y="275" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Streamlit: Checkbox Gejala</text>
+            
+            <!-- Arrow -->
+            <line x1="550" y1="300" x2="550" y2="340" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            
+            <!-- Input Pengguna -->
+            <path d="M 400,340 L 700,340 L 670,410 L 430,410 Z" fill="url(#dataGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="365" font-family="Arial" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">Pengguna Memilih Gejala</text>
+            <text x="550" y="385" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">Minimal 3 gejala harus dipilih</text>
+            
+            <!-- Arrow -->
+            <line x1="550" y1="410" x2="550" y2="450" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            
+            <!-- Klik Tombol Diagnosa -->
+            <rect x="400" y="450" width="300" height="60" rx="10" fill="url(#processGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="475" font-family="Arial" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Klik Tombol</text>
+            <text x="550" y="495" font-family="Arial" font-size="12" fill="white" text-anchor="middle">"🔍 Jalankan Diagnosa"</text>
+            
+            <!-- Arrow -->
+            <line x1="550" y1="510" x2="550" y2="560" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            
+            <!-- Validasi Jumlah Gejala -->
+            <path d="M 550,560 L 700,640 L 550,720 L 400,640 Z" fill="url(#decisionGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="635" font-family="Arial" font-size="14" font-weight="bold" fill="white" text-anchor="middle">≥3 gejala</text>
+            <text x="550" y="655" font-family="Arial" font-size="14" font-weight="bold" fill="white" text-anchor="middle">terpilih?</text>
+            
+            <!-- Cabang TIDAK -->
+            <line x1="700" y1="640" x2="820" y2="640" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <text x="750" y="630" font-family="Arial" font-size="13" font-weight="bold" fill="#C62828">TIDAK</text>
+            
+            <rect x="820" y="600" width="220" height="80" rx="10" fill="#FFE0E0" stroke="#C62828" stroke-width="2"/>
+            <text x="930" y="625" font-family="Arial" font-size="13" font-weight="bold" fill="#C62828" text-anchor="middle">Tampilkan Peringatan</text>
+            <text x="930" y="645" font-family="Arial" font-size="11" fill="#C62828" text-anchor="middle">"❗ Pilih minimal 3 gejala"</text>
+            <text x="930" y="662" font-family="Arial" font-size="11" fill="#C62828" text-anchor="middle">→ Tunggu input baru</text>
+            
+            <!-- Cabang YA -->
+            <line x1="550" y1="720" x2="550" y2="780" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <text x="570" y="760" font-family="Arial" font-size="13" font-weight="bold" fill="#2E8B57">YA</text>
+            
+            <!-- Hitung Probabilitas Posterior -->
+            <rect x="350" y="780" width="400" height="110" rx="10" fill="url(#processGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="805" font-family="Arial" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Hitung Probabilitas Posterior</text>
+            <text x="550" y="828" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Untuk setiap penyakit P:</text>
+            <text x="550" y="848" font-family="Arial" font-size="11" fill="white" text-anchor="middle">P(P|G) ∝ Prior(P) × ∏ Likelihood(P, g)</text>
+            <text x="550" y="868" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Normalisasi agar ΣP = 1</text>
+            
+            <!-- Arrow -->
+            <line x1="550" y1="890" x2="550" y2="940" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            
+            <!-- Tentukan Diagnosa Akhir -->
+            <rect x="400" y="940" width="300" height="60" rx="10" fill="url(#processGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="965" font-family="Arial" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Tentukan Diagnosa Akhir</text>
+            <text x="550" y="985" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Penyakit dengan P tertinggi</text>
+            
+            <!-- Arrow -->
+            <line x1="550" y1="1000" x2="550" y2="1050" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            
+            <!-- Tampilkan Hasil -->
+            <rect x="370" y="1050" width="360" height="100" rx="10" fill="url(#dataGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="1075" font-family="Arial" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">Tampilkan Hasil Diagnosa</text>
+            <text x="550" y="1095" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">• Daftar gejala terpilih</text>
+            <text x="550" y="1112" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">• Probabilitas tiap penyakit</text>
+            <text x="550" y="1129" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">• Diagnosa akhir + persentase</text>
+            
+            <!-- Arrow -->
+            <line x1="550" y1="1150" x2="550" y2="1200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+            
+            <!-- END -->
+            <ellipse cx="550" cy="1250" rx="80" ry="35" fill="url(#endGrad)" stroke="#333" stroke-width="2"/>
+            <text x="550" y="1258" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle">SELESAI</text>
+        </svg>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background: linear-gradient(to bottom, #4CAF50, #2E8B57);"></div>
+                <span class="legend-text">Start / End</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: linear-gradient(to bottom, #64B5F6, #1976D2);"></div>
+                <span class="legend-text">Proses / Perhitungan</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: linear-gradient(to bottom, #FFD54F, #FFA000);"></div>
+                <span class="legend-text">Input / Output Data</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: linear-gradient(to bottom, #FF8A65, #E64A19); transform: rotate(45deg);"></div>
+                <span class="legend-text">Keputusan (Ya/Tidak)</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
