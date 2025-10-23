@@ -1,6 +1,6 @@
 import streamlit as st
 
-# === 1. DATA DASAR SISTEM ===
+# === 1. BASIS PENGETAHUAN ===
 gejala = {
     'G1': 'Daun menguning',
     'G2': 'Akar membusuk',
@@ -19,7 +19,7 @@ penyakit = {
     'P3': 'Penyakit Layu Bakteri'
 }
 
-# Prior (peluang awal sebelum melihat gejala)
+# Prior (peluang awal)
 prior = {
     'P1': 0.3,
     'P2': 0.4,
@@ -56,7 +56,7 @@ def diagnosa(gejala_teramati):
     else:
         posterior_normalized = prior
 
-    return posterior_normalized, detail_hitung, total_prob
+    return posterior_normalized, detail_hitung, posterior_unnormalized, total_prob
 
 
 # === 3. ANTARMUKA STREAMLIT ===
@@ -80,7 +80,7 @@ if st.button("🔍 Jalankan Diagnosa"):
     if len(selected_gejala) < 3:
         st.warning("❗ Harap pilih minimal **3 gejala** untuk mendapatkan hasil diagnosa yang akurat.")
     else:
-        hasil_probabilitas, detail_hitung, total_prob = diagnosa(selected_gejala)
+        hasil_probabilitas, detail_hitung, posterior_unnormalized, total_prob = diagnosa(selected_gejala)
         most_likely = max(hasil_probabilitas, key=hasil_probabilitas.get)
 
         st.subheader("📋 Gejala yang Dipilih")
@@ -98,10 +98,12 @@ if st.button("🔍 Jalankan Diagnosa"):
                     st.markdown(f"**Langkah Perhitungan {penyakit[p_kode]}**")
                     for langkah in detail_hitung[p_kode]:
                         st.write(langkah)
-                    st.write(f"= {posterior_unnormalized := prior[p_kode] * \
-                        eval('*'.join(str(likelihood[p_kode][g]) for g in selected_gejala))}")
-                    st.write(f"Total = {total_prob:.6f}")
-                    st.write(f"P({p_kode}|Gejala) = {posterior_unnormalized:.6f} / {total_prob:.6f} = {prob:.6f}")
+
+                    st.markdown("---")
+                    st.write(f"Nilai unnormalized = {posterior_unnormalized[p_kode]:.6f}")
+                    st.write(f"Total semua penyakit = {total_prob:.6f}")
+                    st.write(f"P({p_kode}|Gejala) = {posterior_unnormalized[p_kode]:.6f} / {total_prob:.6f}")
+                    st.write(f"= **{prob:.6f}**")
                     st.progress(prob)
 
         st.success(f"🌱 **Diagnosa Akhir: {penyakit[most_likely]}**")
@@ -109,8 +111,3 @@ if st.button("🔍 Jalankan Diagnosa"):
 
 else:
     st.info("Pilih gejala, lalu tekan tombol *Jalankan Diagnosa* untuk melihat hasil.")
-
-with open("sp.html", "r", encoding="utf-8") as f:
-    html_content = f.read()
-
-st.components.v1.html(html_content, height=1800, scrolling=True)
