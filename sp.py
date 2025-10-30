@@ -35,7 +35,6 @@ def diagnosa(gejala_teramati):
     posterior_unnormalized = {}
     detail_hitung = {}
 
-    # --- Perhitungan untuk setiap penyakit ---
     for p_kode, p_nama in penyakit.items():
         prob = prior[p_kode]
         langkah = []
@@ -58,7 +57,7 @@ def diagnosa(gejala_teramati):
         langkah.append(f"**Langkah 4: Nilai Tidak Ternormalisasi**  \nP({p_kode}|Gejala) ∝ {prob:.6f}")
         detail_hitung[p_kode] = langkah
 
-    # === Langkah 5A: Hitung total probabilitas ===
+    # Langkah 5A: Hitung total probabilitas
     langkah_total = []
     langkah_total.append("### ⚙️ Langkah 5A: Menghitung Total Probabilitas")
     langkah_total.append("Total = Jumlah semua nilai tidak ternormalisasi dari tiap penyakit:")
@@ -70,7 +69,7 @@ def diagnosa(gejala_teramati):
 
     langkah_total.append(f"**Total = {total_prob:.6f}**")
 
-    # === Langkah 5B: Normalisasi ke 100% ===
+    # Langkah 5B: Normalisasi ke 100%
     posterior_normalized = {}
     langkah_total.append("### 📊 Langkah 5B: Normalisasi ke Bentuk Persen (100%)")
     for p_kode, val in posterior_unnormalized.items():
@@ -87,22 +86,41 @@ def diagnosa(gejala_teramati):
 # === 3. ANTARMUKA STREAMLIT ===
 st.set_page_config(page_title="🌿 Sistem Pakar Cengkeh", layout="wide")
 
-# CSS agar tampil rapi di desktop
+# === CSS adaptif untuk dark/light mode ===
 st.markdown("""
     <style>
     .block-container {max-width: 1000px;}
-    .stExpander {background-color: #f9f9f9 !important; border-radius: 8px; border: 1px solid #ddd;}
-    .perhitungan {
-        font-family: 'Courier New', monospace;
-        background-color: #eef1f4;
-        padding: 10px 12px;
-        border-radius: 6px;
-        margin-bottom: 10px;
-        line-height: 1.5;
+    .stExpander {border-radius: 8px; border: 1px solid var(--border-color, #ddd);}
+
+    @media (prefers-color-scheme: light) {
+        .stExpander {background-color: #f9f9f9;}
+        .perhitungan {
+            font-family: 'Courier New', monospace;
+            background-color: #eef1f4;
+            color: #000;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .stExpander {background-color: #1e1e1e;}
+        .perhitungan {
+            font-family: 'Courier New', monospace;
+            background-color: #2b2b2b;
+            color: #e8e8e8;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
 
+# === TAMPILAN UTAMA ===
 st.title("🌿 Sistem Pakar Diagnosa Penyakit Tanaman Cengkeh")
 st.markdown("Gunakan aplikasi ini untuk **mendiagnosa penyakit tanaman cengkeh** berdasarkan gejala yang kamu amati.")
 
