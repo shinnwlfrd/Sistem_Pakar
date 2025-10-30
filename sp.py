@@ -20,7 +20,7 @@ penyakit = {
     'P3': 'Penyakit Layu Bakteri'
 }
 
-# === 2. NILAI PRIOR DAN LIKELIHOOD ===
+# === NILAI PRIOR DAN LIKELIHOOD ===
 prior = {'P1': 0.3, 'P2': 0.4, 'P3': 0.3}
 
 likelihood = {
@@ -30,7 +30,7 @@ likelihood = {
 }
 
 
-# === 3. FUNGSI PERHITUNGAN NAÏVE BAYES DENGAN DETAIL LANGKAH ===
+# === 2. FUNGSI PERHITUNGAN BAYES ===
 def diagnosa(gejala_teramati):
     posterior_unnormalized = {}
     detail_hitung = {}
@@ -46,31 +46,43 @@ def diagnosa(gejala_teramati):
         for g_kode in gejala_teramati:
             langkah.append(f"• P({g_kode}|{p_kode}) = {likelihood[p_kode][g_kode]:.3f} → ({gejala[g_kode]})")
 
-        langkah.append("**Langkah 3: Perhitungan Prior × Semua Likelihood**")
+        langkah.append("**Langkah 3: Perkalian Prior × Semua Likelihood**")
         langkah.append(f"Rumus: P({p_kode}) × ∏ P(Gejala|{p_kode})")
 
-        # Perhitungan langkah demi langkah (seperti manual)
-        hasil_sementara = prior[p_kode]
-        for i, g_kode in enumerate(gejala_teramati, start=1):
-            before = hasil_sementara
-            hasil_sementara *= likelihood[p_kode][g_kode]
-            langkah.append(f"({i}) {before:.6f} × {likelihood[p_kode][g_kode]:.3f} = {hasil_sementara:.6f}")
+        hasil_temp = prior[p_kode]
+        for g_kode in gejala_teramati:
+            before = hasil_temp
+            hasil_temp *= likelihood[p_kode][g_kode]
+            langkah.append(f"{before:.6f} × {likelihood[p_kode][g_kode]:.3f} = {hasil_temp:.6f}")
 
-        posterior_unnormalized[p_kode] = hasil_sementara
-        langkah.append(f"**Langkah 4: Nilai Tidak Ternormalisasi**  \nP({p_kode}|Gejala) ∝ {hasil_sementara:.6f}")
+        posterior_unnormalized[p_kode] = hasil_temp
+        langkah.append(f"**Langkah 4: Nilai Tidak Ternormalisasi**  \nP({p_kode}|Gejala) ∝ {hasil_temp:.6f}")
         detail_hitung[p_kode] = langkah
 
     total_prob = sum(posterior_unnormalized.values())
-    posterior_normalized = {p_kode: (val / total_prob if total_prob > 0 else 0)
-                            for p_kode, val in posterior_unnormalized.items()}
+    posterior_normalized = {}
+    norm_steps = {}
 
-    return posterior_normalized, detail_hitung, posterior_unnormalized, total_prob
+    for p_kode, val in posterior_unnormalized.items():
+        if total_prob > 0:
+            posterior_normalized[p_kode] = val / total_prob
+        else:
+            posterior_normalized[p_kode] = 0
+
+        # Buat langkah rinci normalisasi
+        norm_steps[p_kode] = [
+            f"**Langkah 5: Normalisasi**",
+            f"Total = {total_prob:.6f}",
+            f"P({p_kode}|Gejala) = {val:.6f} / {total_prob:.6f}",
+            f"= **{posterior_normalized[p_kode]:.6f}** → ({posterior_normalized[p_kode]*100:.2f}%)"
+        ]
+
+    return posterior_normalized, detail_hitung, posterior_unnormalized, total_prob, norm_steps
 
 
-# === 4. ANTARMUKA STREAMLIT ===
+# === 3. ANTARMUKA STREAMLIT ===
 st.set_page_config(page_title="🌿 Sistem Pakar Cengkeh", layout="wide")
 
-# CSS agar tampil rapi dan profesional
 st.markdown("""
     <style>
     .block-container {max-width: 1000px;}
@@ -105,26 +117,24 @@ if st.button("🔍 Jalankan Diagnosa"):
     if len(selected_gejala) < 3:
         st.warning("❗ Pilih minimal 3 gejala untuk hasil yang akurat.")
     else:
-        hasil_prob, detail, unnorm, total = diagnosa(selected_gejala)
+        hasil_prob, detail, unnorm, total, norm_steps = diagnosa(selected_gejala)
         most_likely = max(hasil_prob, key=hasil_prob.get)
 
         st.subheader("📋 Gejala Terpilih")
         st.write(", ".join([gejala[g] for g in selected_gejala]))
 
-        st.subheader("📊 Perhitungan Probabilitas")
+        st.subheader("📊 Perhitungan Probabilitas Lengkap")
         for p_kode, prob in hasil_prob.items():
-            with st.expander(f"**{penyakit[p_kode]} — {prob:.2%}**"):
+            with st.expander(f"**{penyakit[p_kode]} — {prob*100:.2f}%**"):
                 for langkah in detail[p_kode]:
                     st.markdown(f"<div class='perhitungan'>{langkah}</div>", unsafe_allow_html=True)
 
-                st.markdown("<hr>", unsafe_allow_html=True)
-                st.markdown(f"""
-                **Langkah 5: Normalisasi**  
-                P({p_kode}|Gejala) = {unnorm[p_kode]:.6f} / {total:.6f} = **{prob:.6f}**
-                """)
+                for step in norm_steps[p_kode]:
+                    st.markdown(f"<div class='perhitungan'>{step}</div>", unsafe_allow_html=True)
+
                 st.progress(prob)
 
-        st.success(f"🌱 **Diagnosa Akhir:** {penyakit[most_likely]} ({hasil_prob[most_likely]:.2%})")
+        st.success(f"🌱 **Diagnosa Akhir:** {penyakit[most_likely]} ({hasil_prob[most_likely]*100:.2f}%)")
 
 else:
     st.info("Pilih gejala, lalu tekan *Jalankan Diagnosa* untuk melihat hasil.")
