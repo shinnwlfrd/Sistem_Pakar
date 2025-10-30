@@ -20,7 +20,7 @@ penyakit = {
     'P3': 'Penyakit Layu Bakteri'
 }
 
-# === NILAI PRIOR DAN LIKELIHOOD ===
+# === 2. NILAI PRIOR DAN LIKELIHOOD ===
 prior = {'P1': 0.3, 'P2': 0.4, 'P3': 0.3}
 
 likelihood = {
@@ -30,7 +30,7 @@ likelihood = {
 }
 
 
-# === 2. FUNGSI PERHITUNGAN BAYES ===
+# === 3. FUNGSI PERHITUNGAN NAÏVE BAYES DENGAN DETAIL LANGKAH ===
 def diagnosa(gejala_teramati):
     posterior_unnormalized = {}
     detail_hitung = {}
@@ -46,15 +46,18 @@ def diagnosa(gejala_teramati):
         for g_kode in gejala_teramati:
             langkah.append(f"• P({g_kode}|{p_kode}) = {likelihood[p_kode][g_kode]:.3f} → ({gejala[g_kode]})")
 
-        langkah.append("**Langkah 3: Perkalian Prior × Semua Likelihood**")
+        langkah.append("**Langkah 3: Perhitungan Prior × Semua Likelihood**")
         langkah.append(f"Rumus: P({p_kode}) × ∏ P(Gejala|{p_kode})")
 
-        for g_kode in gejala_teramati:
-            prob *= likelihood[p_kode][g_kode]
-            langkah.append(f"→ dikalikan {likelihood[p_kode][g_kode]:.3f} menghasilkan {prob:.6f}")
+        # Perhitungan langkah demi langkah (seperti manual)
+        hasil_sementara = prior[p_kode]
+        for i, g_kode in enumerate(gejala_teramati, start=1):
+            before = hasil_sementara
+            hasil_sementara *= likelihood[p_kode][g_kode]
+            langkah.append(f"({i}) {before:.6f} × {likelihood[p_kode][g_kode]:.3f} = {hasil_sementara:.6f}")
 
-        posterior_unnormalized[p_kode] = prob
-        langkah.append(f"**Langkah 4: Nilai Tidak Ternormalisasi**  \nP({p_kode}|Gejala) ∝ {prob:.6f}")
+        posterior_unnormalized[p_kode] = hasil_sementara
+        langkah.append(f"**Langkah 4: Nilai Tidak Ternormalisasi**  \nP({p_kode}|Gejala) ∝ {hasil_sementara:.6f}")
         detail_hitung[p_kode] = langkah
 
     total_prob = sum(posterior_unnormalized.values())
@@ -64,10 +67,10 @@ def diagnosa(gejala_teramati):
     return posterior_normalized, detail_hitung, posterior_unnormalized, total_prob
 
 
-# === 3. ANTARMUKA STREAMLIT ===
+# === 4. ANTARMUKA STREAMLIT ===
 st.set_page_config(page_title="🌿 Sistem Pakar Cengkeh", layout="wide")
 
-# CSS agar tampil rapi di desktop
+# CSS agar tampil rapi dan profesional
 st.markdown("""
     <style>
     .block-container {max-width: 1000px;}
