@@ -112,7 +112,3 @@ if st.button("🔍 Jalankan Diagnosa"):
 else:
     st.info("Pilih gejala, lalu tekan tombol *Jalankan Diagnosa* untuk melihat hasil.")
 
-with open("sp.html", "r", encoding="utf-8") as f:
-    html_content = f.read()
-
-st.components.v1.html(html_content, height=1800, scrolling=True)
