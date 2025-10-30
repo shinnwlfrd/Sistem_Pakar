@@ -36,12 +36,19 @@ def diagnosa(gejala_teramati):
 
     for p_kode, p_nama in penyakit.items():
         prob = prior[p_kode]
-        langkah = [f"Mulai dari prior: P({p_kode}) = {prior[p_kode]}"]
+        langkah = []
+        langkah.append(f"**Langkah 1: Prior**  \nP({p_kode}) = {prior[p_kode]:.3f}")
+        langkah.append(f"**Langkah 2: Likelihood**")
+
         for g_kode in gejala_teramati:
             prob *= likelihood[p_kode][g_kode]
-            langkah.append(f"× P({g_kode}|{p_kode}) = {likelihood[p_kode][g_kode]}")
-            langkah.append(f"→ Nilai sementara = {prob:.6f}")
+            langkah.append(
+                f"   × P({g_kode}|{p_kode}) = {likelihood[p_kode][g_kode]:.3f} → Nilai sementara = {prob:.6f}"
+            )
+
         posterior_unnormalized[p_kode] = prob
+        langkah.append(f"**Langkah 3: Nilai tidak ternormalisasi**  \n"
+                       f"P({p_kode}|Gejala) ∝ {prob:.6f}")
         detail_hitung[p_kode] = langkah
 
     total_prob = sum(posterior_unnormalized.values())
@@ -56,7 +63,7 @@ def diagnosa(gejala_teramati):
 # === 3. ANTARMUKA STREAMLIT ===
 st.set_page_config(page_title="🌿 Sistem Pakar Cengkeh", layout="wide")
 
-# Tambahkan CSS biar tampilan desktop lebih rapi
+# CSS agar tampil rapi di desktop
 st.markdown("""
     <style>
     .block-container {
@@ -70,7 +77,15 @@ st.markdown("""
         border: 1px solid #ddd;
     }
     .stProgress > div > div {
-        background-color: #228B22 !important;
+        background-color: #2e8b57 !important;
+    }
+    .perhitungan {
+        font-family: 'Courier New', monospace;
+        background-color: #f0f2f6;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+        line-height: 1.5;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -83,7 +98,6 @@ st.header("🩺 Pilih Gejala yang Teramati (Minimal 3)")
 
 selected_gejala = []
 cols = st.columns(3)
-
 for i, (kode, deskripsi) in enumerate(gejala.items()):
     with cols[i % 3]:
         if st.checkbox(deskripsi, key=kode):
@@ -105,13 +119,14 @@ if st.button("🔍 Jalankan Diagnosa"):
 
         for p_kode, prob in hasil_probabilitas.items():
             with st.expander(f"**{penyakit[p_kode]} → {prob:.2%}**"):
-                st.markdown(f"**Langkah Perhitungan untuk {penyakit[p_kode]}**")
                 for langkah in detail_hitung[p_kode]:
-                    st.markdown(f"- {langkah}")
-                st.markdown("---")
-                st.markdown(f"**Nilai tidak ternormalisasi (numerator):** {posterior_unnormalized[p_kode]:.6f}")
-                st.markdown(f"**Total seluruh penyakit (denominator):** {total_prob:.6f}")
-                st.markdown(f"**Probabilitas akhir:** {posterior_unnormalized[p_kode]:.6f} / {total_prob:.6f} = **{prob:.6f}**")
+                    st.markdown(f"<div class='perhitungan'>{langkah}</div>", unsafe_allow_html=True)
+                st.markdown("<hr>", unsafe_allow_html=True)
+                st.markdown(f"""
+                **Langkah 4: Normalisasi**  
+                P({p_kode}|Gejala) = {posterior_unnormalized[p_kode]:.6f} / {total_prob:.6f}  
+                = **{prob:.6f}**
+                """)
                 st.progress(prob)
 
         st.success(f"🌱 **Diagnosa Akhir:** {penyakit[most_likely]} ({hasil_probabilitas[most_likely]:.2%})")
